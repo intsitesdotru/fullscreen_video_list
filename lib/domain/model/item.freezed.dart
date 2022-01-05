@@ -25,7 +25,7 @@ class _$ItemTearOff {
       {required int id,
       required String image,
       required String? regularVideo,
-      required String regularVideoPoster}) {
+      required String? regularVideoPoster}) {
     return _Item(
       id: id,
       image: image,
@@ -47,7 +47,7 @@ mixin _$Item {
   int get id => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
   String? get regularVideo => throw _privateConstructorUsedError;
-  String get regularVideoPoster => throw _privateConstructorUsedError;
+  String? get regularVideoPoster => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -59,7 +59,7 @@ abstract class $ItemCopyWith<$Res> {
   factory $ItemCopyWith(Item value, $Res Function(Item) then) =
       _$ItemCopyWithImpl<$Res>;
   $Res call(
-      {int id, String image, String? regularVideo, String regularVideoPoster});
+      {int id, String image, String? regularVideo, String? regularVideoPoster});
 }
 
 /// @nodoc
@@ -93,7 +93,7 @@ class _$ItemCopyWithImpl<$Res> implements $ItemCopyWith<$Res> {
       regularVideoPoster: regularVideoPoster == freezed
           ? _value.regularVideoPoster
           : regularVideoPoster // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -104,7 +104,7 @@ abstract class _$ItemCopyWith<$Res> implements $ItemCopyWith<$Res> {
       __$ItemCopyWithImpl<$Res>;
   @override
   $Res call(
-      {int id, String image, String? regularVideo, String regularVideoPoster});
+      {int id, String image, String? regularVideo, String? regularVideoPoster});
 }
 
 /// @nodoc
@@ -139,7 +139,7 @@ class __$ItemCopyWithImpl<$Res> extends _$ItemCopyWithImpl<$Res>
       regularVideoPoster: regularVideoPoster == freezed
           ? _value.regularVideoPoster
           : regularVideoPoster // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -162,7 +162,7 @@ class _$_Item implements _Item {
   @override
   final String? regularVideo;
   @override
-  final String regularVideoPoster;
+  final String? regularVideoPoster;
 
   @override
   String toString() {
@@ -206,7 +206,7 @@ abstract class _Item implements Item {
       {required int id,
       required String image,
       required String? regularVideo,
-      required String regularVideoPoster}) = _$_Item;
+      required String? regularVideoPoster}) = _$_Item;
 
   factory _Item.fromJson(Map<String, dynamic> json) = _$_Item.fromJson;
 
@@ -217,7 +217,7 @@ abstract class _Item implements Item {
   @override
   String? get regularVideo;
   @override
-  String get regularVideoPoster;
+  String? get regularVideoPoster;
   @override
   @JsonKey(ignore: true)
   _$ItemCopyWith<_Item> get copyWith => throw _privateConstructorUsedError;

@@ -9,7 +9,7 @@ class Item with _$Item {
     required int id,
     required String image,
     required String? regularVideo,
-    required String regularVideoPoster,
+    required String? regularVideoPoster,
   }) = _Item;
 
   /// Generate Class from Map<String, dynamic>

@@ -10,7 +10,7 @@ _$_Item _$$_ItemFromJson(Map<String, dynamic> json) => _$_Item(
       id: json['id'] as int,
       image: json['image'] as String,
       regularVideo: json['regularVideo'] as String?,
-      regularVideoPoster: json['regularVideoPoster'] as String,
+      regularVideoPoster: json['regularVideoPoster'] as String?,
     );
 
 Map<String, dynamic> _$$_ItemToJson(_$_Item instance) => <String, dynamic>{
