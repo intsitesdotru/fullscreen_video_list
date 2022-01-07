@@ -36,20 +36,18 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           if (state is FetchedItemListState) {
             return PageView.builder(
+              allowImplicitScrolling: true,
               scrollDirection: Axis.vertical,
               controller: _pageController,
               itemCount: state.itemList.length,
               itemBuilder: (BuildContext context, int index) {
-                return Stack(
-                  children: [
-                    VideoBackground(
-                      active: index == activePageIndex,
-                      regularVideo: state.itemList[index].regularVideo,
-                      regularVideoPoster:
-                          state.itemList[index].regularVideoPoster ??
-                              state.itemList[index].image,
-                    ),
-                  ],
+                return VideoBackground(
+                  active: index == activePageIndex,
+                  regularVideo: state.itemList[index].regularVideo,
+                  regularVideoPoster:
+                      state.itemList[index].regularVideoPoster!.isNotEmpty
+                          ? state.itemList[index].regularVideoPoster
+                          : state.itemList[index].image,
                 );
               },
               onPageChanged: (index) {

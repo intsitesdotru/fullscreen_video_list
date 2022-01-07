@@ -18,19 +18,28 @@ class VideoBackground extends StatefulWidget {
 }
 
 class _VideoBackgroundState extends State<VideoBackground> {
-  late VideoPlayerController _videoPlayerController;
+  VideoPlayerController? _videoPlayerController;
+
+  videoInitialized() {
+    return _videoPlayerController != null &&
+        _videoPlayerController!.value.isInitialized;
+  }
 
   @override
   void initState() {
-    if (widget.regularVideo != null) {
-      _videoPlayerController =
-          VideoPlayerController.network(widget.regularVideo!)
-            ..initialize().then((_) {
-              // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-              setState(() {});
-              if (widget.active) _videoPlayerController.play();
-              _videoPlayerController.setLooping(true);
-            });
+    if (widget.regularVideo != null && widget.regularVideo!.isNotEmpty) {
+      _videoPlayerController = VideoPlayerController.network(
+        widget.regularVideo!,
+        videoPlayerOptions: VideoPlayerOptions(),
+      )..initialize().then((_) {
+          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+          setState(() {});
+          _videoPlayerController!.setLooping(true);
+
+          if (widget.active && !_videoPlayerController!.value.isPlaying) {
+            _videoPlayerController!.play();
+          }
+        });
     }
 
     super.initState();
@@ -40,31 +49,48 @@ class _VideoBackgroundState extends State<VideoBackground> {
   void didUpdateWidget(VideoBackground oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.active) {
-      _videoPlayerController.play();
-    } else {
-      _videoPlayerController.pause();
+    if (_videoPlayerController != null) {
+      if (widget.active && !_videoPlayerController!.value.isPlaying) {
+        _videoPlayerController!.play();
+      } else {
+        _videoPlayerController!.pause();
+      }
     }
   }
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
+    _videoPlayerController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Positioned.fill(
-      child: widget.regularVideo != null &&
-              _videoPlayerController.value.isInitialized
-          ? VideoPlayer(_videoPlayerController)
-          : widget.regularVideoPoster != null
-              ? Image.network(
-                  widget.regularVideoPoster!,
-                  fit: BoxFit.fitHeight,
-                )
-              : Container(),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Image.network(
+            widget.regularVideoPoster!,
+            fit: BoxFit.fitHeight,
+          ),
+        ),
+        Positioned.fill(
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 1500),
+            opacity: videoInitialized() ? 1.0 : 0.0,
+            child: FittedBox(
+              fit: BoxFit.fitHeight,
+              child: SizedBox(
+                width: _videoPlayerController?.value.size.width,
+                height: _videoPlayerController?.value.size.height,
+                child: videoInitialized()
+                    ? VideoPlayer(_videoPlayerController!)
+                    : Container(),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
